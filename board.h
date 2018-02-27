@@ -36,6 +36,7 @@ class board {
         void print(); //prints board function
         void printConflicts(); //prints conflicts
     	void clear();
+    	void clearCell(location position);
 };
 
 

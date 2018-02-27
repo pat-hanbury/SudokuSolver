@@ -222,6 +222,23 @@ int board::getCell(int i, int j){
 		return value[i][j];
 }
 
+//clearCell function that clears the cell
+void board::clearCell(location position){
+	//store the value that was in the cell calling getCall
+	int hold = getCell(i, j);
+	//initializes sqNum
+	sqNum = getSqNum(position);
+	//clears the value of the cell
+	value[i][j] = blank; 
+	//check to see if there was anything in the cell before
+	if (hold != blank) 
+		//updates each of the vectors
+		//for rows columns, and square to false
+		conflictsRows[i][value -1 ] = false;
+		conflictsColumns[j][value - 1]	= false;
+		conflictsSqr[sqNum][value - 1] = false;
+}
+
 //bool function that checks to see if the board is blank
 bool board::isBlank(int i, int j){
 	//if statement that checks to see if the cell is blank or not.
