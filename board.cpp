@@ -125,13 +125,15 @@ void board::board() {
 
 
 //print function that prints out the board size and each of the vectors
-void board::print(std::ostream& fout){
-	
+void board::print(std::ostream& fout)
+	{
 	//for statement that iterates over matrix
-	for (int i = 1 ; i <= boardSize; i++){	
+	for (int i = 1 ; i <= boardSize; i++)
+		{	
 		//if statement that checks if rows of the square is 0
 		if ((i - 1) % squareSize == 0)
-		}
+		{
+		
 			//variable set to 
 			fout << " -";
 			//for statement that iterates through the j 
@@ -161,7 +163,7 @@ void board::print(std::ostream& fout){
 		//outputs break
 		fout << "|";
 		fout << endl; 
-	}	
+	}
 	//outputs hash
 	fout << " -";
 	//another for statement
@@ -197,9 +199,9 @@ bool board::isBlank(int i, int j){
 }
 
 //isSolved function to check if the board is solved or not
-bool board::isSolved{
+bool board::isSolved(){
 	//for statememt to iterate over i values
-	for (int i = 1; i < boardSize; i++)
+	for (int i = 1; i < boardSize; i++){
 		//for statement to iterate over other values
 		for (int j = 1; j < boardSize; j++){
 			//checks to see if cell is blank, then return false
@@ -214,8 +216,8 @@ bool board::isSolved{
 
 
 //clear function that sets the conflicts to 0. 
-void board::clear()
-{
+void board::clear(){
+
 	//for statement that iterates over matrix
 	for (int i = 1 ; i <= boardSize; i++){
 		//for statement that will iterate
@@ -231,6 +233,7 @@ void board::clear()
 			squares[i][j] = 0; 	
 		}
 	}
+}
 
 bool board::checkConflict(int value, location position) {
     row = position.row;
