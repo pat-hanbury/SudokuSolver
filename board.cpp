@@ -125,13 +125,15 @@ void board::board(std::string boardFileName) {
 
 
 //print function that prints out the board size and each of the vectors
-void board::print(std::ostream& fout){
-
+void board::print(std::ostream& fout)
+	{
 	//for statement that iterates over matrix
-	for (int i = 1 ; i <= boardSize; i++){
+	for (int i = 1 ; i <= boardSize; i++)
+		{	
 		//if statement that checks if rows of the square is 0
-		if ((i - 1) % squareSize == 0){
-
+		if ((i - 1) % squareSize == 0)
+		{
+		
 			//variable set to
 			fout << " -";
 			//for statement that iterates through the j
@@ -160,6 +162,7 @@ void board::print(std::ostream& fout){
 		}
 		//outputs break
 		fout << "|";
+
 		fout << endl;
 	}
 	//outputs hash
@@ -197,9 +200,9 @@ bool board::isBlank(int i, int j){
 }
 
 //isSolved function to check if the board is solved or not
-bool board::isSolved{
+bool board::isSolved(){
 	//for statememt to iterate over i values
-	for (int i = 1; i < boardSize; i++)
+	for (int i = 1; i < boardSize; i++){
 		//for statement to iterate over other values
 		for (int j = 1; j < boardSize; j++){
 			//checks to see if cell is blank, then return false
@@ -212,24 +215,24 @@ bool board::isSolved{
 }
 
 
+//clear function that sets the conflicts to 0. 
+void board::clear(){
 
-//clear function that sets the conflicts to 0.
-void board::clear() {
-    //for statement that iterates over matrix
-    for (int i = 1; i <= boardSize; i++) {
-        //for statement that will iterate
-        for (int j = 1; j <= boardSize, j++) {
-
-            //sets values to blank
-            value[i][j] = blank;
-            //row vector set the conflicts to 0
-            //column vector sets the conflicts to 0
-            //square vector sets the conflicts to 0
-            rows[i][j] = 0;
-            columns[i][j] = 0;
-            squares[i][j] = 0;
-        }
-    }
+	//for statement that iterates over matrix
+	for (int i = 1 ; i <= boardSize; i++){
+		//for statement that will iterate
+		for (int j = 1; j <= boardSize, j++){
+					
+			//sets values to blank
+			value[i][j] = blank; 
+			//row vector set the conflicts to 0
+			//column vector sets the conflicts to 0
+			//square vector sets the conflicts to 0
+			rows[i][j] = 0;
+			columns[i][j] = 0;
+			squares[i][j] = 0; 	
+		}
+	}
 }
 
 bool board::checkConflict(int value, location position) {
