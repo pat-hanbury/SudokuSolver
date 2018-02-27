@@ -10,9 +10,12 @@
 
 class board {
     public:
-        
-
-
+        const boardSize = squareSize * squareSize;
+		int getCell(int, int);
+		bool isBlank(int, int); 
+        void print(std::ofstream &);
+    	void clear();
+    	
 };
 
 
