@@ -309,3 +309,4 @@ bool board::checkConflict(int value, location position) {
 
     return false;
 }
+
