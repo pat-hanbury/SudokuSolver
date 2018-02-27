@@ -73,7 +73,7 @@ int board::getSqNum(location position) {
     }
 }
 
-void board::board() {
+void board::board(std::string boardFileName) {
     //resize conflict vectors
     conflictsRows.resize(9,std::vector<bool>(9));
     conflictsCols.resize(9,std::vector<bool>(9));
@@ -87,7 +87,7 @@ void board::board() {
     //String variable to store the string from the read file
     std::string store;
     //Open the the text file
-    fin.open("sudoku1.txt");
+    fin.open(boardFileName);
 
     //If statement that checks if the file is there or not
     //Outputs a message if file is not there
@@ -117,7 +117,7 @@ void board::board() {
         }
 
         j++;
-        
+
     }
 
 }
@@ -126,42 +126,42 @@ void board::board() {
 
 //print function that prints out the board size and each of the vectors
 void board::print(std::ostream& fout){
-	
+
 	//for statement that iterates over matrix
-	for (int i = 1 ; i <= boardSize; i++){	
+	for (int i = 1 ; i <= boardSize; i++){
 		//if statement that checks if rows of the square is 0
-		if ((i - 1) % squareSize == 0)
-		}
-			//variable set to 
+		if ((i - 1) % squareSize == 0){
+
+			//variable set to
 			fout << " -";
-			//for statement that iterates through the j 
+			//for statement that iterates through the j
 			for (int j = 1; j <= boardSize; j++)
 				//input variable for "----"
-				fout << "---"; 
+				fout << "---";
 			fout << "-";
 			fout << endl;
 		}
-	//for statement that will iterate over the matrix 
+	//for statement that will iterate over the matrix
 	for (int j = 1; j <= boardSize; j++)
 		{
 		//if statement to see if the columns of the square is 0
-		if ((j - 1) % squareSize == 0) 
+		if ((j - 1) % squareSize == 0)
 		//outputs break
 		fout << "|";
-		
+
 		//if statement that checks if the cell is blank
 		if ( !isBlank(i,j))
 			//checks to see if there is a value within cell
 			fout << " " << getCell(i ,j) << " ";
 		//else statement
-		else 
+		else
 			//outputs blank
 			fout << " ";
 		}
 		//outputs break
 		fout << "|";
-		fout << endl; 
-	}	
+		fout << endl;
+	}
 	//outputs hash
 	fout << " -";
 	//another for statement
@@ -170,7 +170,7 @@ void board::print(std::ostream& fout){
 		fout << "---";
 	//outputs hash line
 	fout << "-";
-	fout << endl;		
+	fout << endl;
 }
 
 //getCell function that returns the value stored in the cell
@@ -204,41 +204,52 @@ bool board::isSolved{
 		for (int j = 1; j < boardSize; j++){
 			//checks to see if cell is blank, then return false
 			if (getCell(i,j) == blank)
-				return false;
+				return true;
 		}
-	}
+
 	//returns true otherwise
-	return true; 
+	return true;
 }
 
 
 
-//clear function that sets the conflicts to 0. 
-void board::clear()
-{
-	//for statement that iterates over matrix
-	for (int i = 1 ; i <= boardSize; i++){
-		//for statement that will iterate
-		for (int j = 1; j <= boardSize, j++){
-					
-			//sets values to blank
-			value[i][j] = blank; 
-			//row vector set the conflicts to 0
-			//column vector sets the conflicts to 0
-			//square vector sets the conflicts to 0
-			rows[i][j] = 0;
-			columns[i][j] = 0;
-			squares[i][j] = 0; 	
-		}
-	}
+//clear function that sets the conflicts to 0.
+void board::clear() {
+    //for statement that iterates over matrix
+    for (int i = 1; i <= boardSize; i++) {
+        //for statement that will iterate
+        for (int j = 1; j <= boardSize, j++) {
+
+            //sets values to blank
+            value[i][j] = blank;
+            //row vector set the conflicts to 0
+            //column vector sets the conflicts to 0
+            //square vector sets the conflicts to 0
+            rows[i][j] = 0;
+            columns[i][j] = 0;
+            squares[i][j] = 0;
+        }
+    }
+}
 
 bool board::checkConflict(int value, location position) {
     row = position.row;
     col = position.column;
+    sqNum = getSqNum(position);
 
-    if (conflictsCols[col][value-1] == TRUE){
-        return TRUE;
+    if (conflictsCols[col][value-1]){
+        return true;
     }
 
-    if (conflictsRows[row][value-1])
+    if (conflictsRows[row][value-1]){
+        return true;
+    }
+
+    if (conflictsSqr[sqNum][value-1]){
+        return true;
+    }
+
+    else{
+        return false;
+    }
 }
