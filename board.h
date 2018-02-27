@@ -35,6 +35,7 @@ class board {
 		bool isBlank(int, int); 
         void print(); //prints function
     	void clear();
+    	void clearCell(location position);
 };
 
 
