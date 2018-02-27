@@ -121,7 +121,8 @@ void board::board() {
     }
 
 }
-#include "board.h" 
+
+
 
 //print function that prints out the board size and each of the vectors
 void board::print(std::ostream& fout){
@@ -230,4 +231,14 @@ void board::clear()
 			squares[i][j] = 0; 	
 		}
 	}
+
+bool board::checkConflict(int value, location position) {
+    row = position.row;
+    col = position.column;
+
+    if (conflictsCols[col][value-1] == TRUE){
+        return TRUE;
+    }
+
+    if (conflictsRows[row][value-1])
 }
