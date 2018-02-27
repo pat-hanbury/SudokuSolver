@@ -8,6 +8,7 @@
 
 #include "location.h"
 #include <vector>
+#include <iostream>
 
 class board {
     public:
