@@ -126,7 +126,7 @@ void board::board(std::string boardFileName) {
 
 //print function that prints out the board size and each of the vectors
 void board::print(std::ostream& fout)
-	{
+{
 	//for statement that iterates over matrix
 	for (int i = 1 ; i <= boardSize; i++)
 		{	
@@ -202,14 +202,14 @@ bool board::isBlank(int i, int j){
 //isSolved function to check if the board is solved or not
 bool board::isSolved(){
 	//for statememt to iterate over i values
-	for (int i = 1; i < boardSize; i++){
-		//for statement to iterate over other values
-		for (int j = 1; j < boardSize; j++){
-			//checks to see if cell is blank, then return false
-			if (getCell(i,j) == blank)
-				return true;
-		}
-
+	for (int i = 1; i < boardSize; i++) {
+        //for statement to iterate over other values
+        for (int j = 1; j < boardSize; j++) {
+            //checks to see if cell is blank, then return false
+            if (getCell(i, j) == blank)
+                return true;
+        }
+    }
 	//returns true otherwise
 	return true;
 }
@@ -240,19 +240,20 @@ bool board::checkConflict(int value, location position) {
     col = position.column;
     sqNum = getSqNum(position);
 
-    if (conflictsCols[col][value-1]){
+    if (conflictsCols[col][value - 1]) {
         return true;
     }
 
-    if (conflictsRows[row][value-1]){
+    if (conflictsRows[row][value - 1]) {
         return true;
     }
 
-    if (conflictsSqr[sqNum][value-1]){
+    if (conflictsSqr[sqNum][value - 1]) {
         return true;
     }
 
-    else{
-        return false;
-    }
+    return false;
 }
+
+
+
