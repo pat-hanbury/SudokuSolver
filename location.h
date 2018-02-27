@@ -11,7 +11,7 @@ class location {
 public:
     int row;
     int column;
-    void location(int rowInput, int colInput); //initializes row and column inputs
-    void location()
+    location(int rowInput, int colInput); //initializes row and column inputs
+    location();
 };
 #endif //PROJ4SUDUKO_LOCATION_H

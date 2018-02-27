@@ -9,8 +9,10 @@ int main() {
 
     //print boards
     board1.print();
+    board1.printConflicts();
     board2.print();
+    board2.printConflicts();
     board3.print();
-
+    board3.printConflicts();
     return 0;
 }

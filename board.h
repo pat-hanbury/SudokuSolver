@@ -33,7 +33,8 @@ class board {
         const boardSize = squareSize * squareSize;
 		int getCell(int, int);
 		bool isBlank(int, int); 
-        void print(); //prints function
+        void print(); //prints board function
+        void printConflicts(); //prints conflicts
     	void clear();
 };
 
