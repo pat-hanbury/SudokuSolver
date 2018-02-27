@@ -120,3 +120,14 @@ void board::board() {
     }
 
 }
+
+bool board::checkConflict(int value, location position) {
+    row = position.row;
+    col = position.column;
+
+    if (conflictsCols[col][value-1] == TRUE){
+        return TRUE;
+    }
+
+    if (conflictsRows[row][value-1])
+}

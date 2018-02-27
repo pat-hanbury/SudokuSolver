@@ -26,7 +26,7 @@ class board {
         bool isSolved; //checks if board is solved
         void addValue(int value , location position); //adds value to a certain location. Updates conflicts
         void clearValue(location position);
-        void checkConflict(int value ,location position); //checks if there is a confilct in a particular position
+        bool checkConflict(int value ,location position); //checks if there is a confilct in a particular position
         //constructor. Reads board
         int getSqNum(location position); //outputs number 0-8 corresponding to a the square number of a position
         void board();
