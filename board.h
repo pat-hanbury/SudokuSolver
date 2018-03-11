@@ -11,14 +11,15 @@
 #include <iostream>
 #include <fstream>
 #include <cmath>
+#include <string>
 
 using namespace std;
 
 class board {
     public:
         //member variables
-        int boardLength = 9; //for 9x9 Suduko boards
-
+        const int boardLength = 9; //for 9x9 Suduko boards
+        const int boardSize = 81;
 
         //matrix containing board
         std::vector<std::vector<int>> boardData;
@@ -36,7 +37,6 @@ class board {
         //constructor. Reads board
         int getSqNum(location position); //outputs number 0-8 corresponding to a the square number of a position
         board(std::string boardFileName);
-        const int boardSize = 81;
 		int getCell(location position);
 		bool isBlank(int, int); 
         void print(); //prints board function

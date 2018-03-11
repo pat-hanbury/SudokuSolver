@@ -126,8 +126,6 @@ board::board(std::string boardFileName) {
         exit(0);
     }
 
-    std::cout<< "opened file correctly" << endl;
-
     int i = 0;
     int j = 0;
 
@@ -138,14 +136,14 @@ board::board(std::string boardFileName) {
 
 
         while (i < 9) {
-            std::cout << "finchar = " << finChar << "i="<< i << " j="<< j << std::endl;
             //increment arithmetic
 
             if (finChar == '.') {
                 boardData[i][j] = 0;
             } else {
-                boardData[i][j] = finChar;
+                boardData[i][j] = finChar - '0'; //minus 0 is needed to normalize
             }
+
 
             j++;
 
@@ -163,9 +161,33 @@ board::board(std::string boardFileName) {
 }
 
 
+void board::print() {
+    cout << endl << endl; //make some space
+    cout << endl << "-------------------------------"; //divider
+    for(int i = 0 ; i < boardLength ; i++){
+        cout << endl; //move to next line
+
+
+        for(int j = 0 ; j < boardLength ; j++){
+            cout << boardData[i][j] << "  " ;
+            if(j==2 || j == 5 || j == 8){
+                cout << "|"; //divider
+            }
+        }
+
+        if(i==2 || i == 5 || i == 8){
+            cout << endl << "-------------------------------"; //divider
+        }
+    }
+
+    cout << endl << endl;
+}
+
 
 //print function that prints out the board size and each of the vectors
-
+/*
+ * JOHN's Print Function: FOO - Didn't really work
+ *
 void board::print() {
     location position;
 
@@ -257,6 +279,7 @@ void board::printConflicts(){
 	cout << std::endl;
 	}
 }
+*/
 
 //getCell function that returns the value stored in the cell
 int board::getCell(location position){
