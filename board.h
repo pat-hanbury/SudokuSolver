@@ -10,12 +10,15 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 using namespace std;
 
 class board {
     public:
         //member variables
+        int boardLength = 9; //for 9x9 Suduko boards
+
 
         //matrix containing board
         std::vector<std::vector<int>> boardData;

@@ -75,18 +75,46 @@ int board::getSqNum(location position) {
 }
 
 board::board(std::string boardFileName) {
+    /*Determine Number of Boards in File */
+
+    std::ifstream finSizeTest;
+    //String variable to store the string from the read file
+    std::string storeString;
+
+    finSizeTest.open(boardFileName);
+
+    //If statement that checks if the file is there or not
+    //Outputs a message if file is not there
+    if (!finSizeTest){
+        std::cout << "No file";
+        system("pause");
+        exit(0);
+    }
+
+    //determine size of board
+    finSizeTest >> storeString; //put contents of board into a string
+
+    double numberOfCharacters = storeString.size(); //indicates number of tiles in board
+    cout<<"board Size: " << boardSize;
+    int numberOfBoards = int(numberOfCharacters/81);
+    //close the file for first time
+    finSizeTest.close();
+
+
+
     //resize conflict vectors
-    conflictsRows.resize(9,std::vector<bool>(9));
-    conflictsCols.resize(9,std::vector<bool>(9));
-    conflictsSqr.resize(9,std::vector<bool>(9));
+    conflictsRows.resize(boardLength,std::vector<bool>(boardLength));
+    conflictsCols.resize(boardLength,std::vector<bool>(boardLength));
+    conflictsSqr.resize(boardLength,std::vector<bool>(boardLength));
+
+    std::cout<<"made it past resize" << endl;
 
     //resize board vectors (FOO)
-    boardData.resize(9,std::vector<int>(9));
+    boardData.resize(boardLength,std::vector<int>(boardLength));
 
     //get board input
     std::ifstream fin;
-    //String variable to store the string from the read file
-    std::string store;
+
     //Open the the text file
     fin.open(boardFileName);
 
@@ -98,29 +126,34 @@ board::board(std::string boardFileName) {
         exit(0);
     }
 
+    std::cout<< "opened file correctly" << endl;
+
     int i = 0;
     int j = 0;
 
-
-    //"Z" dictates end of board
+    //Take the first board. Can modify this is Other boards are desired
     while(fin){
-        std::string finChar;
+        char finChar;
         fin >> finChar;
 
-        while (finChar != "Z") {
+
+        while (i < 9) {
+            std::cout << "finchar = " << finChar << "i="<< i << " j="<< j << std::endl;
             //increment arithmetic
-            if (j == 9) {
+
+            if (finChar == '.') {
+                boardData[i][j] = 0;
+            } else {
+                boardData[i][j] = finChar;
+            }
+
+            j++;
+
+            if (j == boardLength) {
                 i++;
                 j = 0;
             }
 
-            if (finChar == ".") {
-                boardData[i][j] = 0;
-            } else {
-                boardData[i][j] = stoi(finChar);
-            }
-
-            j++;
 
             fin >> finChar;
         }
