@@ -21,12 +21,13 @@ using namespace std;
 class board 
 {
 	public:
-		//const variables
+		//member variables
 		const int blank = -1;  // Indicates that a cell is blank
 		const int squareSize = 3;  //  The number of cells in a small square
 		const int minValue = 1; 
 		const int maxValue = 9;
 		const int boardSize = squareSize * squareSize;
+        int numCalls = 0; //keeps track of the number or recursive calls required to solve board
 
             //Methods
         board();
@@ -41,6 +42,8 @@ class board
         void print(std::ofstream &fin); //prints board function
         void printConflicts(std::ofstream &); //prints conflicts
     	void clear();
+        void solve(); //solves board
+        bool solveRecursive(int row, int col); //recursive solve function used in solve()
     	
     //private declarations	
 	private:
