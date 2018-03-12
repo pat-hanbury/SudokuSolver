@@ -32,7 +32,7 @@ class board
 
             //Methods
         board();
-		void initialize(ifstream &fin);
+		void getInput(std::string boardName);
         void updateConflicts( int, int, int);
         bool checkConflicts(int, int, int); //checks if there is a confilct in a particular position
         int squareNumber (int, int); //outputs number 0-8 corresponding to a the square number of a position
@@ -40,7 +40,7 @@ class board
 		int getCell(int, int);
 		void clearCell(int i, int j);
 		bool isBlank(int, int); 
-        void print(std::ofstream &fin); //prints board function
+        void print(); //prints board function
         void printConflicts(std::ofstream &); //prints conflicts
     	void clear();
         void solve(); //solves board

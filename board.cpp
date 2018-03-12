@@ -15,9 +15,20 @@ board::board()
 	squares.resize(boardSize + 1, boardSize + 1);
 }
 
-void board::initialize(std::ifstream &fin)
+void board::getInput(std::string boardName){
 // Read a Sudoku board from the input file.
-{
+
+    //declare input stream
+    ifstream fin;
+    //open file
+    fin.open(boardName);
+
+    if(!fin){
+        cout << "ERROR: File not opened correctly." << endl;
+        system("pause");
+        exit(0);
+    }
+
 	char ch; //stores each character as its read in
 	
 	clear();
@@ -28,11 +39,18 @@ void board::initialize(std::ifstream &fin)
 			// If the read char is not Blank
 			if (ch != '.')
 			{
-				setCell(i, j, ch - '0');   // Convert char to int
+				bool test = setCell(i, j, int(ch - '0'));   // Convert char to int
+                if (!test){
+                    throw("ERROR: Input board has inherent conflicts");
+                    system("pause");
+                    exit(0);
+                    }
 			}
 			else clearCell(i, j); //if the read char is blank, clear the cell
 		}
 	}
+
+    fin.close();
 }
 
 int board::squareNumber(int i, int j)
@@ -72,10 +90,12 @@ int board::getCell(int i, int j)
 // Returns the value stored in a cell.  Throws an exception
 // if bad values are passed.
 {
-	if (i >= 1 && i <= boardSize && j >= 1 && j <= boardSize)
-		return value[i][j];
-	else
-		throw rangeError("bad value in getCell");
+    if (i >= 1 && i <= boardSize && j >= 1 && j <= boardSize)
+        return value[i][j];
+    else {
+        cout << "error in getCell" << endl;
+        throw rangeError("bad value in getCell");
+    }
 }
 
 //clearCell function that clears the cell
@@ -89,9 +109,11 @@ void board::clearCell(int i, int j) {
 //bool function that checks to see if the board is blank
 bool board::isBlank(int i, int j){
 	//if statement that checks to see if the cell is blank or not.
-	if (i < 1 || i > boardSize || j < 1 || j > boardSize)
-		//throws error
-		throw rangeError("Bad Value");
+	if (i < 1 || i > boardSize || j < 1 || j > boardSize) {
+        //throws error
+        cout << endl << "i = " << i << "j = " << j << endl;
+        throw rangeError("Bad Value");
+    }
 	//if statement that checks to see if cell or true
 	if (value[i][j] == blank){
 		//return true
@@ -102,36 +124,36 @@ bool board::isBlank(int i, int j){
 }
 
 //print function that prints out the board size and each of the vectors
-void board::print(std::ofstream& fout)
+void board::print()
 {
 	for (int i = 1; i <= boardSize; i++)
 	{
 		if ((i - 1) % squareSize == 0)
 		{
-			fout << " -";
+			cout << " -";
 			for (int j = 1; j <= boardSize; j++)
-				fout << "---";
-			fout << "-";
-			fout << endl;
+				cout << "---";
+			cout << "-";
+			cout << endl;
 		}
 		for (int j = 1; j <= boardSize; j++)
 		{
 			if ((j - 1) % squareSize == 0)
-				fout << "|";
+				cout << "|";
 			if (!isBlank(i, j))
-				fout << " " << getCell(i, j) << " ";
+				cout << " " << getCell(i, j) << " ";
 			else
-				fout << "   ";
+				cout << "   ";
 		}
-		fout << "|";
-		fout << endl;
+		cout << "|";
+		cout << endl;
 	}
 
-	fout << " -";
+	cout << " -";
 	for (int j = 1; j <= boardSize; j++)
-		fout << "---";
-	fout << "-";
-	fout << endl;
+		cout << "---";
+	cout << "-";
+	cout << endl;
 }
 
 
@@ -183,9 +205,9 @@ bool board::checkConflicts(int i, int j, int value) {
 
 //checksolved function
 bool board::checkSolved() {
-	for (int i = 1; i < b.boardSize + 1; i++) { //iterate over ever conflict matrix
-		for (int j = 1; j < b.boardSize + 1; j++) {
-			if (b.getCell(i, j) == b.blank) //if any of the cells in the board are blank
+	for (int i = 1; i < boardSize + 1; i++) { //iterate over ever conflict matrix
+		for (int j = 1; j < boardSize + 1; j++) {
+			if (getCell(i, j) == blank) //if any of the cells in the board are blank
 				return false; //the board isnt solved
 		}
 	}
@@ -196,14 +218,15 @@ bool board::checkSolved() {
 void board::solve() {
     /*this function solves the suduko board using recursvie calls and backtracking
      * number of recursive calls used will be stored in numCalls variable */
-    int row = 0;
-    int col = 0;
+    int row = 1;
+    int col = 1;
     int solved = false;
 
     //find first blank spot
+    cout << "made it to while function" << endl;
     while(!isBlank(row,col)){
-        if(col == 8){
-            col = 0;
+        if(col == 9){
+            col = 1;
             row++;
         }
         else{
@@ -220,21 +243,37 @@ void board::solve() {
     else{
         cout << "ERROR: Suduko board could not be solved. :( " << endl;
     }
-
-
 }
 
 bool board::solveRecursive(int row, int col){
     numCalls++; //increase the recursive count by 1
 
     bool solved = false; //return variable indicated if recursion was successful
+    int val = 1;
 
-    while(!solved){
-        //do stuff
+    //loop will continue until branch fails (val == 9) or the board is solved
+    while(val < 9 && !solved){
+        if(this->setCell(row,col,val)){ //if no conflicts, this both sets the cell and returns true
+            //find next empty cell
+            while(!isBlank(row,col)){
+                if(col == 9){
+                    col = 1;
+                    row++;
+                }
+                else{
+                    col++;
+                }
+            }
+            solved = this->solveRecursive(row,col);
+
+        }
+
+        if (!solved){
+            val++;
+        }
     }
 
-    //return true to exit recussion chain
-    return true;
-
+    //return true if recursion through this branch was successful and false if not
+    return solved;
 
 }
