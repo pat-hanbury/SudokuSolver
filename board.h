@@ -42,6 +42,10 @@ class board
         void printConflicts(std::ofstream &); //prints conflicts
     	void clear();
     	
+    	//
+    	bool checkSolved();
+    	
+    	
     //private declarations	
 	private:
 		matrix<int> value; //matrix that stores all current values of a sudoku board

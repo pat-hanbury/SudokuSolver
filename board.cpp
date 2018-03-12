@@ -179,3 +179,17 @@ bool board::checkConflicts(int i, int j, int value) {
 		return true; //return true because there is a conflict
 	return false; //return false if there weren't any conflicts
 }
+
+
+//checksolved function
+bool board::checkSolved() {
+	for (int i = 1; i < b.boardSize + 1; i++) { //iterate over ever conflict matrix
+		for (int j = 1; j < b.boardSize + 1; j++) {
+			if (b.getCell(i, j) == b.blank) //if any of the cells in the board are blank
+				return false; //the board isnt solved
+		}
+	}
+	return true; //if all cells are not blank, the board is solved
+}
+
+
