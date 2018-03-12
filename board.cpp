@@ -193,3 +193,41 @@ bool board::checkSolved() {
 }
 
 
+void board::solve() {
+    /*this function solves the suduko board using recursvie calls and backtracking
+     * number of recursive calls used will be stored in numCalls variable */
+    int row = 0;
+    int col = 0;
+    int solved = false;
+
+    //find first blank spot
+    while(!isBlank(row,col)){
+        if(col == 8){
+            col = 0;
+            row++;
+        }
+        else{
+            col++;
+        }
+    }
+
+    solved = this->solveRecursive(row, col);
+    numCalls++; //increase the recursion count by one.
+
+    if (solved){
+        cout << "Suduko board has been solved!" << endl;
+    }
+    else{
+        cout << "ERROR: Suduko board could not be solved. :( " << endl;
+    }
+
+
+}
+
+bool board::solveRecursive(int row, int col){
+    numCalls++; //increase the recursive count by 1
+
+    
+
+}
+
