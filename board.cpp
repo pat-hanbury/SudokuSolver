@@ -227,6 +227,14 @@ void board::solve() {
 bool board::solveRecursive(int row, int col){
     numCalls++; //increase the recursive count by 1
 
-    
+    bool solved = false; //return variable indicated if recursion was successful
+
+    while(!solved){
+        //do stuff
+    }
+
+    //return true to exit recussion chain
+    return true;
+
 
 }
