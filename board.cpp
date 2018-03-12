@@ -231,3 +231,24 @@ bool board::solveRecursive(int row, int col){
 
 }
 
+/////////////////////////////////////////
+
+int * board::findMaxConstraints() {
+	int maxConstraints = 0, constraints; //initialize max constraints at 0, declare a variable to store current number of constraints
+	int * maxCoords = new int; //allocate memory for the return pointer
+	for (int i = 1; i <= b.boardSize; i++) { //iterate over the entire board
+		for (int j = 1; j <= b.boardSize; j++) {
+			constraints = 0; //reset current number of constraints
+			if (b.getCell(i, j) == b.blank) { //check if current cell is not one of the initial values
+				for (int k = 1; k <= 9; k++) { //check every value at the cell
+					if (b.checkConflicts(i, j, k)) //if this value has a conflict at this cell
+						constraints++; //increment current number of constraints
+				}
+				
+			
+bool board::function(int * coordinates, int &count) {
+	count++; //increment counter to keep track of number of calls
+	if (coordinates == NULL) { //if flag was set, either the board was solved or backtrack
+		delete coordinates; //free the memory allocated for the index
+		return checkSolved(); //check if the board is solved; if no, backtrack
+	}	
