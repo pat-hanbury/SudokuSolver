@@ -277,3 +277,4 @@ bool board::solveRecursive(int row, int col){
     return solved;
 
 }
+
