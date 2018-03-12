@@ -27,17 +27,6 @@ class board
 		const int minValue = 1; 
 		const int maxValue = 9;
 		const int boardSize = squareSize * squareSize;
-		
-		
-        //member variables
-
-
-        //matrix containing board
-        //std::vector<std::vector<int>> boardData;
-        //conflicts "improved Conflict Approach"
-        //std::vector<std::vector<bool>> conflictsRows;
-        //std::vector<std::vector<bool>> conflictsCols;
-        //std::vector<std::vector<bool>> conflictsSqr;
 
             //Methods
         board();
@@ -45,11 +34,8 @@ class board
         void updateConflicts( int, int, int);
         bool checkConflicts(int, int, int); //checks if there is a confilct in a particular position
         int squareNumber (int, int); //outputs number 0-8 corresponding to a the square number of a position
-        
-        
         bool setCell(int i, int j, int val);
 		int getCell(int, int);
-		
 		void clearCell(int i, int j);
 		bool isBlank(int, int); 
         void print(std::ofstream &fin); //prints board function
