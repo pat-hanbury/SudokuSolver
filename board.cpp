@@ -384,3 +384,40 @@ bool board::checkConflict(int value, location position) {
     return false;
 }
 
+void board::solve() {
+    /* Method solves suduko board using recursion and backtracking.
+     * Outputs number of recursive calls used */
+
+    //check if board is already solved
+    if (this->isSolved()){
+        return;
+    }
+
+    //find first empty cell
+    location cell(0,0);
+
+    //FOO: Need to fix isBlank to take a location input
+    while(!this->isBlank(cell)){
+        if (cell.row>8 || cell.column > 8){
+            cout << "ERROR: Unreachable cell location. Aborting solve()." << endl;
+            system("pause");
+            exit(0);
+        }
+
+        if (cell.column == 8){
+            cell.column = 0;
+            cell.row++;
+        }
+        else{
+            cell.column++;
+        }
+    }
+
+
+
+
+
+
+
+
+}
