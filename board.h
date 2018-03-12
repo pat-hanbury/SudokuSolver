@@ -10,35 +10,60 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include "d_matrix.h"
+#include "d_except.h"
+#include <list>
+
 
 using namespace std;
 
-class board {
-    public:
+class board 
+{
+	public:
+		//const variables
+		const int blank = -1;  // Indicates that a cell is blank
+		const int squareSize = 3;  //  The number of cells in a small square
+		const int minValue = 1; 
+		const int maxValue = 9;
+		const int boardSize = squareSize * squareSize;
+		
+		
         //member variables
-
         //matrix containing board
-        std::vector<std::vector<int>> boardData;
+        //std::vector<std::vector<int>> boardData;
         //conflicts "improved Conflict Approach"
-        std::vector<std::vector<bool>> conflictsRows;
-        std::vector<std::vector<bool>> conflictsCols;
-        std::vector<std::vector<bool>> conflictsSqr;
+        //std::vector<std::vector<bool>> conflictsRows;
+        //std::vector<std::vector<bool>> conflictsCols;
+        //std::vector<std::vector<bool>> conflictsSqr;
 
             //Methods
+        board();
+		void initialize(ifstream &fin);
         
-        bool isSolved(); //checks if board is solved
-        void addValue(int value , location position); //adds value to a certain location. Updates conflicts
-        void clearCell(location position);
-        bool checkConflict(int value ,location position); //checks if there is a confilct in a particular position
+        
+        
+        void updateConflicts( int, int, int);
+        bool checkConflicts(int, int, int); //checks if there is a confilct in a particular position
         //constructor. Reads board
-        int getSqNum(location position); //outputs number 0-8 corresponding to a the square number of a position
-        board(std::string boardFileName);
-        const int boardSize = 81;
-		int getCell(location position);
+        int squareNumber (int, int); //outputs number 0-8 corresponding to a the square number of a position
+        
+        
+        bool setCell(int i, int j, int val);
+		int getCell(int, int);
+		
+		void clearCell(int i, int j);
+	
 		bool isBlank(int, int); 
-        void print(); //prints board function
-        void printConflicts(); //prints conflicts
+        void print(std::ofstream &fin); //prints board function
+        void printConflicts(std::ofstream &); //prints conflicts
     	void clear();
+    	
+    //private declarations	
+	private:
+		matrix<int> value; //matrix that stores all current values of a sudoku board
+		matrix<bool> rows; //matrix that stors all row conflicts
+		matrix<bool> columns; //matrix that stores all column conflicts
+		matrix<bool> squares; //matrix that stores all square conflicts
 };
 
 

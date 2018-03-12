@@ -1,257 +1,87 @@
-// Project 4a- Patrick Hanbury and John Kang
+// Project 4b- Patrick Hanbury and John Kang
 // Created by Patrick on 2/25/2018.
-//
-
+// TRIAL
 
 #include "board.h"
 
-
-void board::addValue(int value, location position) {
-    //get coordinates
-    int row = position.row;
-    int col = position.column;
-    int sqNum = getSqNum(position);
-
-    //add value to board data matrix
-    boardData[row][col] = value;
-
-    //update conflicts
-    conflictsCols[col][value-1] = true;
-    conflictsRows[row][value-1] = true;
-    conflictsSqr[sqNum][value-1] = true;
+//constructor
+board::board()
+{
+	//initialize the value matrix to 9 X 
+	value.resize(boardSize + 1, boardSize + 1);
+	//initialize conflict matrices to 9 X 9
+	rows.resize(boardSize + 1, boardSize + 1);
+	columns.resize(boardSize + 1, boardSize + 1);
+	squares.resize(boardSize + 1, boardSize + 1);
 }
 
-int board::getSqNum(location position) {
-    int row = position.row;
-    int col = position.column;
-
-    if(row > 8 || col > 8){
-        throw "range error.";
-    }
-
-    //squares 0-2
-    if (row < 3){
-        if (col < 3){
-            return 0;
-        }
-
-        if (col > 2 && col < 6){
-            return 1;
-        }
-
-        if (col > 5){
-            return 2;
-        }
-    }
-
-    //squares 3-5
-    if (row > 2 && row < 6){
-        if (col < 3){
-            return 3;
-        }
-
-        if (col > 2 && col < 6){
-            return 4;
-        }
-
-        if (col > 5){
-            return 5;
-        }
-    }
-
-    if (row > 5){
-        if (col < 3){
-            return 6;
-        }
-
-        if (col > 2 && col < 6){
-            return 7;
-        }
-
-        if (col > 5){
-            return 8;
-        }
-    }
-}
-
-board::board(std::string boardFileName) {
-    //resize conflict vectors
-    conflictsRows.resize(9,std::vector<bool>(9));
-    conflictsCols.resize(9,std::vector<bool>(9));
-    conflictsSqr.resize(9,std::vector<bool>(9));
-
-    //resize board vectors (FOO)
-    boardData.resize(9,std::vector<int>(9));
-
-    //get board input
-    std::ifstream fin;
-    //String variable to store the string from the read file
-    std::string store;
-    //Open the the text file
-    fin.open(boardFileName);
-
-    //If statement that checks if the file is there or not
-    //Outputs a message if file is not there
-    if (!fin){
-        std::cout << "No file";
-        system("pause");
-        exit(0);
-    }
-
-    int i = 0;
-    int j = 0;
-
-
-    //"Z" dictates end of board
-    while(fin){
-        std::string finChar;
-        fin >> finChar;
-
-        while (finChar != "Z") {
-            //increment arithmetic
-            if (j == 9) {
-                i++;
-                j = 0;
-            }
-
-            if (finChar == ".") {
-                boardData[i][j] = 0;
-            } else {
-                boardData[i][j] = stoi(finChar);
-            }
-
-            j++;
-
-            fin >> finChar;
-        }
-        }
-
-
-}
-
-
-
-//print function that prints out the board size and each of the vectors
-
-void board::print() {
-    location position;
-
-	//for statement that iterates over matrix
-	for (int i = 1 ; i <= boardSize; i++) {
-        //if statement that checks if rows of the square is 0
-        if ((i - 1) % 9 == 0) {
-            //variable set to
-            cout << " -";
-            //for statement that iterates through the j
-            for (int j = 1; j <= boardSize; j++)
-                //input variable for "----"
-                cout << "---";
-            cout << "-";
-            cout << endl;
-        }
-        //for statement that will iterate over the matrix
-        for (int j = 1; j <= boardSize; j++) {
-            //if statement to see if the columns of the square is 0
-            if ((j - 1) % 9 == 0) {
-                //outputs break
-                cout << "|";
-            }
-
-            //if statement that checks if the cell is blank
-            if (!isBlank(i, j)) {
-                //checks to see if there is a value within cell
-                position.column = i;
-                position.row = j;
-                cout << " " << getCell(position) << " ";
-            }
-                //else statement
-            else {
-                //outputs blank
-                cout << " ";
-            }
-            //outputs break
-            cout << "|";
-            cout << endl;
-        }
-        //outputs hash
-        cout << " -";
-        //another for statement
-        for (int j = 1; j <= boardSize; j++) {
-            //outputs dash lines
-            cout << "---";
-        }
-        //outputs hash line
-        cout << "-";
-        cout << endl;
-    }
-}
-
-//print Conflicts function
-void board::printConflicts(){
-	//prints out row conflicts
-	cout << "Row Conflicts" << std::endl;
-	//for statuement tat iterates over th ematrix
-	for (int i=1; i < 9; i++){
-		for (int j =1; j < 9; j++){
-			//prints out the rows and leaves a space behind it.
-			cout << conflictsRows[i][j] << " ";
-		}
-	//prints out a line
-	cout << std::endl;
-	}	
+void board::initialize(std::ifstream &fin)
+// Read a Sudoku board from the input file.
+{
+	char ch; //stores each character as its read in
 	
-	//prints out column conflicts
-	cout << "Column Conflicts" << std::endl;
-	//for statement that iterates over the matrix
-	for (int i=1; i < 9; i++){
-		for (int j =1; j < 9; j++){
-			//prints out the columns and leaves a space behind it
-			cout << conflictsCols[i][j] << " ";
+	clear();
+	for (int i = 1; i <= boardSize; i++) {//iterate over entire board
+		for (int j = 1; j <= boardSize; j++)
+		{
+			fin >> ch;
+			// If the read char is not Blank
+			if (ch != '.')
+			{
+				setCell(i, j, ch - '0');   // Convert char to int
+			}
+			else clearCell(i, j); //if the read char is blank, clear the cell
 		}
-	//prints out a line
-	cout << std::endl;
 	}
-	
-	//prints out squares conflicts
-	cout << "Squares Conflicts" << std::endl;
-	//for statement iterates over the matrix
-	for (int i=1; i < 9; i++){
-		for (int j =1; j < 9; j++){
-			//prints out the columns and leaves a space behind it
-			cout << conflictsSqr[i][j] << " ";
+}
+
+int board::squareNumber(int i, int j)
+{
+	return squareSize * ((i - 1) / squareSize) + (j - 1) / squareSize + 1;
+}
+
+void board::clear()
+// clear the entire board.
+{
+	for (int i = 1; i <= boardSize; i++) { //iterate over the entire value matrix
+		for (int j = 1; j <= boardSize; j++) {
+			value[i][j] = blank; //set every value to blank
+			//set every conflict to 0
+			rows[i][j] = 0;
+			columns[i][j] = 0;
+			squares[i][j] = 0;
 		}
-	//prints out a line
-	cout << std::endl;
 	}
+}
+
+bool board::setCell(int i, int j, int val)
+// set cell i,j to val and update conflicts
+{
+	if (!checkConflicts(i, j, val)) { //only insert the value if there are no conflicts for that value 
+		value[i][j] = val; //change the value of the specified index to specified value
+		updateConflicts(i, j, val); //update the conflicts of the specified index and value
+		return true;
+	}
+	return false;
 }
 
 //getCell function that returns the value stored in the cell
-int board::getCell(location position){
-	//if statement that returns a value
-    int i = position.row;
-    int j = position.column;
-	if (i >= 1 && i <= 9 && j >= 1 && j <= 9)
-		//returns a value
-		return boardData[i][j];
+int board::getCell(int i, int j)
+// Returns the value stored in a cell.  Throws an exception
+// if bad values are passed.
+{
+	if (i >= 1 && i <= boardSize && j >= 1 && j <= boardSize)
+		return value[i][j];
+	else
+		throw rangeError("bad value in getCell");
 }
 
 //clearCell function that clears the cell
-void board::clearCell(location position){
-	//store the value that was in the cell calling getCall
-	int hold = getCell(position);
-	//initializes sqNum
-	int sqNum = getSqNum(position);
-    int row = position.row;
-    int col = position.column;
-	//clears the value of the cell
-	boardData[row][col] = 0;
-	//check to see if there was anything in the cell before
-	if (hold != 0)
-		//updates each of the vectors
-		//for rows columns, and square to false
-		conflictsRows[row][hold -1 ] = false;
-		conflictsCols[col][hold - 1]	= false;
-		conflictsSqr[sqNum][hold - 1] = false;
+void board::clearCell(int i, int j) {
+	int holder = getCell(i, j); //store the value that was in the cell before clear
+	value[i][j] = blank; //clear the specified cell
+	if (holder != blank) //check if there was anything in the cell before
+		updateConflicts(i, j, holder); //update conflicts of the specified cell
 }
 
 //bool function that checks to see if the board is blank
@@ -259,9 +89,9 @@ bool board::isBlank(int i, int j){
 	//if statement that checks to see if the cell is blank or not.
 	if (i < 1 || i > boardSize || j < 1 || j > boardSize)
 		//throws error
-		throw ("Bad Value");
+		throw rangeError("Bad Value");
 	//if statement that checks to see if cell or true
-	if (boardData[i][j] == 0){
+	if (value[i][j] == blank){
 		//return true
 		return true;
 	}
@@ -269,62 +99,81 @@ bool board::isBlank(int i, int j){
 	return false;
 }
 
-//isSolved function to check if the board is solved or not
-bool board::isSolved(){
-    location position;
-	//for statememt to iterate over i values
-	for (int i = 1; i < boardSize; i++) {
-        //for statement to iterate over other values
-        for (int j = 1; j < boardSize; j++) {
-            //checks to see if cell is blank, then return false
-            position.row = i;
-            position.column = j;
-            if (getCell(position) == 0)
-                return true;
-        }
-    }
-	//returns true otherwise
-	return true;
+//print function that prints out the board size and each of the vectors
+void board::print(std::ofstream& fout)
+{
+	for (int i = 1; i <= boardSize; i++)
+	{
+		if ((i - 1) % squareSize == 0)
+		{
+			fout << " -";
+			for (int j = 1; j <= boardSize; j++)
+				fout << "---";
+			fout << "-";
+			fout << endl;
+		}
+		for (int j = 1; j <= boardSize; j++)
+		{
+			if ((j - 1) % squareSize == 0)
+				fout << "|";
+			if (!isBlank(i, j))
+				fout << " " << getCell(i, j) << " ";
+			else
+				fout << "   ";
+		}
+		fout << "|";
+		fout << endl;
+	}
+
+	fout << " -";
+	for (int j = 1; j <= boardSize; j++)
+		fout << "---";
+	fout << "-";
+	fout << endl;
 }
 
 
-//clear function that sets the conflicts to 0. 
-void board::clear(){
-
-	//for statement that iterates over matrix
-	for (int i = 1 ; i <= boardSize; i++){
-		//for statement that will iterate
-		for (int j = 1; j <= boardSize; j++){
-					
-			//sets values to blank
-			boardData[i][j] = 0;
-			//row vector set the conflicts to 0
-			//column vector sets the conflicts to 0
-			//square vector sets the conflicts to 0
-			conflictsRows[i][j] = 0;
-			conflictsCols[i][j] = 0;
-			conflictsSqr[i][j] = 0;
+//print Conflicts function
+void board::printConflicts(std::ofstream & fout) {
+	fout << "row conflicts" << std::endl; 
+	for (int i = 1; i < boardSize + 1; i++) { //iterate over row conflict matrix
+		for (int j = 1; j < boardSize + 1; j++) {
+			fout << rows[i][j] << " "; //print the conflict value with a space after it
 		}
+		fout << std::endl; //new line after every row of the matrix
+	}
+	fout << "column conflicts" << std::endl;
+	for (int i = 1; i < boardSize + 1; i++) { //iterate over the column conflict matrix
+		for (int j = 1; j < boardSize + 1; j++) {
+			fout << columns[i][j] << " "; //print the conflict value with a space after
+		}
+		fout << std::endl; //new line after every row of the matrix
+	}
+	fout << "square conflicts" << std::endl;
+ 	for (int i = 1; i < boardSize + 1; i++) { //iterate over the square conflict matrix
+		for (int j = 1; j < boardSize + 1; j++) {
+			fout << squares[i][j] << " "; //print the conflict value with a space
+		}
+		fout << std::endl; //new line after every row of the matrix
 	}
 }
 
-bool board::checkConflict(int value, location position) {
-    int row = position.row;
-    int col = position.column;
-    int sqNum = getSqNum(position);
 
-    if (conflictsCols[col][value - 1]) {
-        return true;
-    }
-
-    if (conflictsRows[row][value - 1]) {
-        return true;
-    }
-
-    if (conflictsSqr[sqNum][value - 1]) {
-        return true;
-    }
-
-    return false;
+void board::updateConflicts(int i, int j, int value) {
+	if (getCell(i, j) != blank) { //if the cell has a value, then conflicts need to be add
+		rows[i][value] = true; //set the specified row, column, and square to true because there are conflicts
+		columns[j][value] = true;
+		squares[squareNumber(i, j)][value] = true;
+	}
+	else { //if the cell is blank, then conflicts need to be removed
+		rows[i][value] = false; //set the specified row, column, and square to false because there aren't conflicts
+		columns[j][value] = false;
+		squares[squareNumber(i, j)][value] = false;
+	}
 }
 
+bool board::checkConflicts(int i, int j, int value) {
+	if (rows[i][value] || columns[j][value] || squares[squareNumber(i, j)][value]) //if any of the matrices has a with the specified value at the specified index
+		return true; //return true because there is a conflict
+	return false; //return false if there weren't any conflicts
+}
