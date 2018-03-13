@@ -44,7 +44,7 @@ class board
         void printConflicts(std::ofstream &); //prints conflicts
     	void clear();
         void solve(); //solves board
-        bool solveRecursive(int row, int col); //recursive solve function used in solve()
+        bool solveRecursive(int rowInput, int colInput); //recursive solve function used in solve()
     	
     	//
     	bool checkSolved();

@@ -245,16 +245,21 @@ void board::solve() {
     }
 }
 
-bool board::solveRecursive(int row, int col){
+bool board::solveRecursive(int rowInput, int colInput){
     numCalls++; //increase the recursive count by 1
 
     bool solved = false; //return variable indicated if recursion was successful
     int val = 1;
+	int row , col; //row and col integers for loop
 
     //loop will continue until branch fails (val == 9) or the board is solved
     while(val < 9 && !solved){
-        if(this->setCell(row,col,val)){ //if no conflicts, this both sets the cell and returns true
+        if(this->setCell(rowInput,colInput,val)){ //if no conflicts, this both sets the cell and returns true
             //find next empty cell
+			//first reset the row and col to be their input values
+			//this insures that values are not leftover values from previous loops
+			row = rowInput;
+			col = colInput;
             while(!isBlank(row,col)){
                 if(col == 9){
                     col = 1;
@@ -270,6 +275,7 @@ bool board::solveRecursive(int row, int col){
 
         if (!solved){
             val++;
+			this->clearCell(rowInput,colInput);
         }
     }
 
