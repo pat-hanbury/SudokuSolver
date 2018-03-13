@@ -1,5 +1,10 @@
 #include <iostream>
 #include "board.h"
+#include <limits.h>
+#include "d_matrix.h"
+#include "d_except.h"
+#include <fstream>
+#include <string>
 
 int main() {
     //initialize board
