@@ -1,5 +1,10 @@
 #include <iostream>
 #include "board.h"
+#include <limits.h>
+#include "d_matrix.h"
+#include "d_except.h"
+#include <fstream>
+#include <string>
 
 void getInput(std::string boardName, vector<board>& vectorInput);
 
@@ -32,6 +37,7 @@ int main() {
 
     return 0;
 }
+
 
 void getInput(std::string boardName, vector<board>& vectorInput){
 // Read a Sudoku board from the input file.
@@ -76,3 +82,4 @@ void getInput(std::string boardName, vector<board>& vectorInput){
     }
     fin.close();
 }
+
