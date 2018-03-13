@@ -288,11 +288,12 @@ bool board::solveRecursive(int rowInput, int colInput){
             }
 
 			//if we are not at the end
-			if (row != 9 || col !=9) {
+			if (rowInput != 9 || colInput !=9) {
 				solved = this->solveRecursive(row, col);
 			}
 			else{
 				cout << "ERROR: Board is full but output is recursive output is false" << endl;
+				cout << "Num Calls  = " << this->numCalls << endl;
 				system("pause");
 				exit(0);
 			}
