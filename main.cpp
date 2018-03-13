@@ -10,6 +10,7 @@ int main() {
 
     board1.solve(); //solve the board
     board1.print(); //print solved board
+    cout << "Num Calls  = " << board1.numCalls << endl;
 
     return 0;
 }

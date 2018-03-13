@@ -234,6 +234,8 @@ void board::solve() {
         }
     }
 
+	cout << "First Blank is at row: " << row << "   col: " << col << endl;
+
     solved = this->solveRecursive(row, col);
     numCalls++; //increase the recursion count by one.
 
@@ -250,10 +252,10 @@ bool board::solveRecursive(int rowInput, int colInput){
     bool solved = false; //return variable indicated if recursion was successful
     int val = 1;
 	int row , col; //row and col integers for loop
-	bool loopCondition;
+	bool loopCondition = false;
 
     //loop will continue until branch fails (val == 9) or the board is solved
-    while(val < 9 && !solved){
+    while(val < 10 && !solved){
         if(this->setCell(rowInput,colInput,val)){ //if no conflicts, this both sets the cell and returns true
 			//check if adding this value solves the board
 			if(checkSolved()){
@@ -264,7 +266,9 @@ bool board::solveRecursive(int rowInput, int colInput){
 			//this insures that values are not leftover values from previous loops
 			row = rowInput;
 			col = colInput;
-			
+
+			//determine if loop will start or be skipped
+			loopCondition = !this->isBlank(row,col);
             while(loopCondition){
                 if(col == 9){
                     col = 1;
@@ -284,8 +288,14 @@ bool board::solveRecursive(int rowInput, int colInput){
             }
 
 			//if we are not at the end
+			if (row != 9 || col !=9) {
 				solved = this->solveRecursive(row, col);
-
+			}
+			else{
+				cout << "ERROR: Board is full but output is recursive output is false" << endl;
+				system("pause");
+				exit(0);
+			}
         }
 
         if (!solved){
